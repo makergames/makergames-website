@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MakerGames – Next-Gen Attraction Games</title>
+<meta name="description" content="MakerGames builds interactive attraction games. Meet iReflex and MegaGrid.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0b0d;--bg2:#14161a;--ink:#f4f5ef;--mute:#8e939c;--line:#262a31;
+  --pink:#ff5a1f;--violet:#d4ff3a;--cyan:#3d8bff;--lime:#ffc857;--amber:#ffb62e;
+  --grad:var(--violet);
+  --display:'Orbitron','Arial Black',Impact,sans-serif;
+  --body:'Manrope','Segoe UI',Arial,sans-serif;
+  color-scheme:dark;box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-behavior:smooth;scroll-padding-top:92px;height:auto}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--body);overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px;position:relative}
+#bar{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--grad);transform-origin:0 50%;transform:scaleX(0);z-index:30}
+#glow{position:fixed;width:520px;height:520px;left:0;top:0;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle,rgba(212,255,58,.10),rgba(212,255,58,.03) 45%,transparent 70%);transition:transform .15s ease-out}
+.aurora{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.aurora i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.16;animation:drift 18s ease-in-out infinite alternate}
+.aurora i:nth-child(1){width:420px;height:420px;background:var(--pink);left:-80px;top:-60px}
+.aurora i:nth-child(2){width:480px;height:480px;background:var(--violet);right:-100px;top:60px;animation-delay:-6s}
+.aurora i:nth-child(3){width:360px;height:360px;background:var(--cyan);left:40%;bottom:-160px;animation-delay:-12s;opacity:.12}
+@keyframes drift{to{transform:translate(70px,50px) scale(1.15)}}
+
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(10,11,13,.72);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:76px}
+@media(max-width:760px){.logo{font-size:22px}header .wrap{height:68px}}
+.logo{font:900 28px var(--display);letter-spacing:.03em;text-decoration:none}
+.logo span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+nav{display:flex;gap:24px;align-items:center}
+nav a:not(.btn){text-decoration:none;color:var(--mute);font-weight:500;font-size:15px;position:relative}
+nav a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:var(--grad);transform:scaleX(0);transition:transform .3s}
+nav a:not(.btn):hover{color:var(--ink)}nav a:not(.btn):hover::after{transform:scaleX(1)}
+.btn{position:relative;display:inline-block;padding:14px 28px;border-radius:999px;background:var(--grad);background-size:200% 100%;color:#0a0b0d;font:700 16px var(--body);text-decoration:none;border:0;cursor:pointer;
+  box-shadow:0 0 30px rgba(212,255,58,.4);transition:background-position .5s,box-shadow .3s,transform .2s}
+.btn:hover{background-position:100% 0;box-shadow:0 0 46px rgba(212,255,58,.55)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.btn.ghost:hover{border-color:var(--cyan);box-shadow:0 0 26px rgba(212,255,58,.3)}
+nav .btn{padding:9px 18px;font-size:14px}
+
+.hero{position:relative;padding:80px 0 40px;overflow:hidden;z-index:1}
+.hero h1{font:700 clamp(30px,6vw,72px)/1.08 var(--display);margin:0 0 22px;letter-spacing:.01em;max-width:14ch;
+  color:var(--ink)}
+@keyframes sheen{to{background-position:100% 0}}
+.hero p{color:var(--mute);max-width:46ch;font-size:19px;margin:0 0 32px}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.stage{perspective:900px;margin-top:60px}
+.grid{display:grid;grid-template-columns:repeat(14,1fr);gap:6px;transform:rotateX(52deg) scale(1.05);transform-origin:50% 0;touch-action:none;
+  -webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
+.tile{aspect-ratio:1;border-radius:6px;background:rgba(212,255,58,.07);border:1px solid var(--line);transition:background .9s,box-shadow .9s,border-color .9s}
+.tile.on{transition:none;background:var(--c);border-color:var(--c);box-shadow:0 0 26px var(--c)}
+.hint{color:var(--mute);font-size:14px;margin-top:8px}
+
+.marq{overflow:hidden;border-block:1px solid var(--line);background:rgba(20,22,26,.8);position:relative;z-index:1}
+.marq div{display:flex;width:max-content;animation:mq 26s linear infinite;padding:16px 0}
+.marq span{font:700 18px var(--display);padding-right:48px;color:transparent;-webkit-text-stroke:1px #6d737d;white-space:nowrap}
+.marq span:nth-child(3n+1){color:var(--pink);-webkit-text-stroke:0}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+section{padding:96px 0;position:relative;z-index:1}
+h2{font:700 clamp(24px,3.6vw,40px)/1.15 var(--display);margin:0 0 14px;letter-spacing:.03em;text-transform:uppercase}
+.lead{color:var(--mute);max-width:52ch;margin:0 0 48px}
+
+.rv{opacity:0;transform:translateY(44px) scale(.97);filter:blur(6px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1),filter .9s;transition-delay:var(--d,0s)}
+.rv.in{opacity:1;transform:none;filter:none}
+
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;perspective:1100px}
+.card{--mx:50%;--my:50%;--rx:0deg;--ry:0deg;position:relative;border-radius:24px;padding:2px;background:var(--line);
+  transform:rotateX(var(--rx)) rotateY(var(--ry));transition:transform .2s ease-out,background .3s}
+.card .in2{position:relative;border-radius:22px;padding:38px;background:#111317;height:100%;overflow:hidden}
+.card .in2::before{content:"";position:absolute;inset:0;background:radial-gradient(380px circle at var(--mx) var(--my),color-mix(in srgb,var(--c) 32%,transparent),transparent 60%);opacity:0;transition:opacity .3s}
+.card:hover .in2::before{opacity:1}
+.card:hover{background:var(--c);box-shadow:0 30px 80px -30px var(--c)}
+.card h3{position:relative;font:700 30px var(--display);letter-spacing:.02em;margin:0 0 12px;color:var(--c);text-shadow:0 0 28px var(--c)}
+.card p,.card ul,.card a{position:relative}
+.card p{color:var(--mute);margin:0 0 20px}
+.card ul{list-style:none;padding:0;margin:0 0 26px}
+.card li{padding:9px 0;border-top:1px solid var(--line)}
+.ph{color:var(--lime);font-style:italic}
+.card a{font-weight:700;color:var(--c);text-decoration:none;display:inline-block;transition:letter-spacing .3s}
+.card a:hover{letter-spacing:.05em}
+
+.about{display:grid;grid-template-columns:1.2fr 1fr;gap:56px;align-items:start}
+.vals{display:grid;gap:18px}
+.vals div{padding:20px 22px;border-radius:16px;border:1px solid var(--line);background:rgba(20,22,26,.7);transition:transform .3s,border-color .3s,box-shadow .3s}
+.vals div:hover{transform:translateX(10px);border-color:var(--violet);box-shadow:-6px 0 0 var(--pink)}
+.vals b{display:block;font-size:18px}.vals span{color:var(--mute)}
+.stats{display:flex;gap:48px;margin-top:36px;flex-wrap:wrap}
+.stats div{font:900 40px var(--display);background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stats small{display:block;font:400 14px var(--body);color:var(--mute);-webkit-text-fill-color:var(--mute)}
+
+form{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:780px}
+form .full{grid-column:1/-1}
+label{display:grid;gap:6px;font-size:14px;color:var(--mute)}
+input,select,textarea{background:rgba(20,22,26,.9);border:1px solid var(--line);border-radius:12px;padding:13px 14px;color:var(--ink);font:400 16px var(--body);width:100%;transition:border-color .3s,box-shadow .3s}
+input:focus,select:focus,textarea:focus{border-color:var(--cyan);outline:none;box-shadow:0 0 0 3px rgba(212,255,58,.22),0 0 24px rgba(212,255,58,.2)}
+textarea{min-height:110px;resize:vertical}
+.note{color:var(--mute);font-size:14px;margin-left:10px}
+footer{border-top:1px solid var(--line);padding:36px 0;color:var(--mute);font-size:15px;position:relative;z-index:1}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+.card a.more{padding:10px 22px;border:1px solid var(--c);border-radius:999px;transition:background .3s,color .3s,box-shadow .3s}
+.card a.more:hover{background:var(--c);color:#0a0b0d;letter-spacing:0;box-shadow:0 0 30px var(--c)}
+.gh{position:relative;padding:72px 0 56px;overflow:hidden}
+.gh::before{content:"";position:absolute;width:560px;height:560px;right:-120px;top:-120px;border-radius:50%;background:var(--c);filter:blur(120px);opacity:.18;pointer-events:none}
+.gh h1{position:relative;font:700 clamp(34px,8.5vw,96px)/1.05 var(--display);margin:26px 0 16px;color:var(--c);text-shadow:0 0 60px var(--c);letter-spacing:.02em}
+.gh p{position:relative;font-size:20px;max-width:46ch;margin:0 0 30px}
+.back{position:relative;color:var(--mute);text-decoration:none;font-weight:700}
+.back:hover{color:var(--c)}
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.specs div{padding:22px;border:1px solid var(--line);border-radius:16px;background:rgba(20,22,26,.7);transition:transform .3s,border-color .3s,box-shadow .3s}
+.specs div:hover{transform:translateY(-6px);border-color:var(--c);box-shadow:0 18px 50px -24px var(--c)}
+.specs b{display:block;font-size:18px}.specs small{color:var(--mute);font-size:14px}
+.gal{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:200px 200px;gap:16px}
+.gal div{border-radius:18px;border:1px dashed var(--line);display:grid;place-items:center;background:color-mix(in srgb,var(--c) 10%,transparent);transition:transform .4s}
+.gal div:first-child{grid-row:span 2}
+.gal div:hover{transform:scale(1.02)}
+.band{text-align:center;border-top:1px solid var(--line)}
+.band p{margin:0 auto 28px}
+.thumb{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:14px;margin:0 0 22px;display:block;position:relative}
+.gal div.pic{border:0;overflow:hidden;padding:0;display:block;background:none}
+.gal .pic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
+.gal .pic:hover img{transform:scale(1.06)}
+.chips{display:flex;gap:12px;flex-wrap:wrap}
+.chips span{padding:10px 22px;border:1px solid var(--c);border-radius:999px;color:var(--c);font-weight:700}
+.about-intro{max-width:60ch}
+.story{display:grid;grid-template-columns:minmax(220px,1fr) 1.7fr;gap:28px;margin-top:8px}
+.chap{display:grid;gap:10px;align-content:start}
+.chap button{position:relative;overflow:hidden;text-align:left;padding:16px 20px;border:1px solid var(--line);border-radius:14px;background:rgba(20,22,26,.7);color:var(--mute);font:700 16px var(--body);cursor:pointer;transition:color .3s,border-color .3s,transform .3s}
+.chap button:hover{color:var(--ink);transform:translateX(6px)}
+.chap button[aria-selected="true"]{color:var(--ink);border-color:var(--violet)}
+.chap button::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:100%;background:var(--violet);transform:scaleX(0);transform-origin:0 50%}
+.chap button[aria-selected="true"]::after{transform:scaleX(1)}
+.chap.auto button[aria-selected="true"]::after{animation:fill 6s linear forwards}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.panel{padding:38px;border:1px solid var(--line);border-radius:20px;background:#111317;min-height:270px}
+.pane{display:none}
+.pane.on{display:block;animation:pin .5s cubic-bezier(.2,.7,.2,1)}
+@keyframes pin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.pane h3{font:700 24px/1.2 var(--display);letter-spacing:.02em;margin:0 0 14px;color:var(--violet)}
+.pane p{font-size:19px;max-width:46ch;margin:0 0 12px}
+.facts{display:flex;gap:56px;margin-top:44px;flex-wrap:wrap}
+.facts b{display:block;font:700 44px var(--display);color:var(--violet)}
+.facts small{color:var(--mute);font-size:15px}
+.soc{display:flex;gap:12px;align-items:center}
+.soc a{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--mute);text-decoration:none;transition:color .3s,background .3s,border-color .3s,transform .3s,box-shadow .3s}
+.soc a:hover{color:#0a0b0d;background:var(--violet);border-color:var(--violet);transform:translateY(-5px);box-shadow:0 12px 30px -10px rgba(212,255,58,.6)}
+.soc svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.soc svg .f{fill:currentColor;stroke:none}
+.foot-l{display:grid;gap:6px}
+.foot-l .logo{font-size:24px}
+.foot-l a.cu{color:var(--violet);font-weight:700;width:max-content;margin-top:6px;transition:letter-spacing .3s}
+.foot-l a.cu:hover{color:var(--violet);letter-spacing:.06em}
+
+.foot-l a{color:var(--mute)}.foot-l a:hover{color:var(--ink)}
+@media(max-width:760px){.story{grid-template-columns:1fr}.panel{padding:26px}.facts{gap:36px}}
+@media(max-width:760px){.gal{grid-template-columns:1fr;grid-template-rows:none;grid-auto-rows:170px}.gal div:first-child{grid-row:auto}}
+@media(max-width:760px){
+  nav a:not(.btn){display:none}
+  .about{grid-template-columns:1fr}
+  form{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(8,1fr)}
+  .grid .tile:nth-child(n+41){display:none}
+  #glow{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .pane.on{animation:none}
+  .rv{opacity:1;transform:none;filter:none}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div><div id="glow"></div>
+<header><div class="wrap">
+  <a class="logo" href="#top">Maker<span>Games</span></a>
+  <nav><a href="#products">Products</a><a href="#about">About</a><a class="btn" href="#contact">Get in touch</a></nav>
+</div></header>
+
+<main id="top">
+<div class="hero">
+  <div class="aurora"><i></i><i></i><i></i></div>
+  <div class="wrap">
+    <h1>Play that moves the world.</h1>
+    <p>MakerGames builds next-gen attraction games that keep youth active, healthy and full of fun.</p>
+    <div class="cta"><a class="btn" href="#products">See our games</a><a class="btn ghost" href="#contact">Request a demo</a></div>
+    <div class="stage"><div class="grid" id="grid" aria-hidden="true"></div></div>
+    <div class="hint">Move your cursor or finger across the floor.</div>
+  </div>
+</div>
+
+<div class="marq" aria-hidden="true"><div id="mq"></div></div>
+
+<section id="products"><div class="wrap">
+  <h2 class="rv">Our games</h2>
+  <p class="lead rv" style="--d:.1s">Two attractions, built to pull crowds and keep them playing.</p>
+  <div class="products">
+    <article class="card rv" style="--c:var(--pink)">
+      <div class="in2">
+        <img class="thumb" src="img/ireflex-1.jpg" alt="iReflex room with glowing eyes and players" loading="lazy">
+        <h3>iReflex</h3>
+        <p>Dodge the gaze. Beat the sequence. Hit the buttons before the eye catches you.</p>
+        <ul><li>Up to 6 players</li><li>200 sq ft min arena</li><li>All ages. No age limit on fun!</li></ul>
+        <a class="more" href="#irefelx">Learn more</a>
+      </div>
+    </article>
+    <article class="card rv" style="--c:var(--cyan);--d:.15s">
+      <div class="in2">
+        <img class="thumb" src="img/megagrid-1.jpg" alt="MegaGrid LED floor with players" loading="lazy">
+        <h3>MegaGrid</h3>
+        <p>Step smart. Score fast. LED-lit touch tiles and 30+ levels.</p>
+        <ul><li>1–6 players</li><li>200 sq ft min arena</li><li>All ages. No age limit on fun!</li></ul>
+        <a class="more" href="#megagrid">Learn more</a>
+      </div>
+    </article>
+  </div>
+</div></section>
+
+<section id="about"><div class="wrap">
+  <h2 class="rv">About us</h2>
+  <p class="lead about-intro rv" style="--d:.1s">MakerGames is built by founders with 4+ years in the amusement gaming industry. We make crowd-pulling games, and we believe youth deserve a better game to play on.</p>
+  <div class="story rv" style="--d:.15s">
+    <div class="chap auto" id="chap" role="tablist" aria-label="Our story">
+      <button role="tab" aria-selected="true" aria-controls="p0" id="t0">Where we come from</button>
+      <button role="tab" aria-selected="false" aria-controls="p1" id="t1">What we know</button>
+      <button role="tab" aria-selected="false" aria-controls="p2" id="t2">Why we build</button>
+      <button role="tab" aria-selected="false" aria-controls="p3" id="t3">Where we are heading</button>
+    </div>
+    <div class="panel">
+      <div class="pane on" role="tabpanel" id="p0" aria-labelledby="t0"><h3>Where we come from</h3><p>We are the founders of MakerGames. We have spent 4+ years in the amusement gaming industry, learning what makes a crowd stop, watch and play.</p><p class="ph">[Add where MakerGames is based]</p></div>
+      <div class="pane" role="tabpanel" id="p1" aria-labelledby="t1"><h3>What we know</h3><p>Gaming technology is our craft. We build real-world games that pull crowds, from LED floors to reflex rooms.</p></div>
+      <div class="pane" role="tabpanel" id="p2" aria-labelledby="t2"><h3>Why we build</h3><p>Youth deserve a better game to play on. We build attractions that keep them active, healthy and having fun.</p></div>
+      <div class="pane" role="tabpanel" id="p3" aria-labelledby="t3"><h3>Where we are heading</h3><p>We want to change the world through play, one game at a time. iReflex and MegaGrid are where it starts.</p></div>
+    </div>
+  </div>
+  <div class="facts rv" style="--d:.2s">
+    <div><b><span class="cnt" data-to="4">4</span>+</b><small>Years in amusement gaming</small></div>
+    <div><b><span class="cnt" data-to="2">2</span></b><small>Games, with more coming</small></div>
+  </div>
+  <p class="ph rv" style="--d:.25s;margin-top:32px">[Add founder names and photos]</p>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <h2 class="rv">Let’s talk</h2>
+  <p class="lead rv" style="--d:.1s">Tell us about your location. We’ll reply within 24 hours.</p>
+  <form id="f" class="rv" style="--d:.15s">
+    <label>First name<input name="First name" required autocomplete="given-name"></label>
+    <label>Last name<input name="Last name" autocomplete="family-name"></label>
+    <label>Phone<input name="Phone" type="tel" autocomplete="tel"></label>
+    <label>Email<input name="email" type="email" required autocomplete="email"></label>
+    <label>Company<input name="Company" autocomplete="organization"></label>
+    <label>Game<select name="Game"><option>iReflex</option><option>MegaGrid</option><option>Both</option><option>Other</option></select></label>
+    <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
+    <label class="full">Message<textarea name="Message"></textarea></label>
+    <div class="full"><button class="btn" type="submit">Send enquiry</button><span class="note" id="note" role="status" aria-live="polite"></span></div>
+  </form>
+</div></section>
+</main>
+<main id="g-irefelx" hidden></main>
+<main id="g-megagrid" hidden></main>
+
+<footer><div class="wrap">
+  <div class="foot-l"><div class="logo">Maker<span>Games</span></div><div>© 2026 MakerGames</div><a href="mailto:info@makergames.tech">info@makergames.tech</a><a class="cu" href="#contact">Contact us</a></div>
+  <div class="soc" aria-label="Follow us">
+    <a href="#" data-ph title="Instagram (link to add)" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle class="f" cx="17.2" cy="6.8" r="1.2"/></svg></a>
+    <a href="#" data-ph title="WhatsApp (link to add)" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21l1.6-4.8A8.5 8.5 0 1 1 8 19.6L3 21z"/><path d="M9 8.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .7a3 3 0 0 1-1.7-1.7l.7-1-1-2z"/></svg></a>
+    <a href="#" data-ph title="LinkedIn (link to add)" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><circle class="f" cx="6" cy="5.2" r="2"/><path class="f" d="M4 9h4v11H4zM10 9h4v1.5c.6-1 1.8-1.8 3.3-1.8 3 0 3.7 2 3.7 4.6V20h-4v-5.8c0-1.3-.2-2.4-1.7-2.4S14 12.9 14 14.2V20h-4z"/></svg></a>
+  </div>
+</div></footer>
+
+<script>
+(function(){
+  var rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  // floor grid
+  var g=document.getElementById('grid'),cols=['#ff5a1f','#3d8bff','#d4ff3a','#f4f5ef'],tiles=[];
+  for(var i=0;i<14*6;i++){var t=document.createElement('div');t.className='tile';g.appendChild(t);tiles.push(t)}
+  function lit(t){t.style.setProperty('--c',cols[Math.floor(Math.random()*cols.length)]);t.classList.add('on');setTimeout(function(){t.classList.remove('on')},70)}
+  function at(x,y){var el=document.elementFromPoint(x,y);if(el&&el.classList.contains('tile'))lit(el)}
+  g.addEventListener('pointermove',function(e){at(e.clientX,e.clientY)});
+  g.addEventListener('pointerdown',function(e){at(e.clientX,e.clientY)});
+  if(!rm)setInterval(function(){lit(tiles[Math.floor(Math.random()*tiles.length)])},500);
+  // marquee
+  var words=['iReflex','MegaGrid','Next-gen attraction games','Play for real'],h='';
+  for(var k=0;k<8;k++)words.forEach(function(w){h+='<span>'+w+'</span>'});
+  document.getElementById('mq').innerHTML=h;
+  // cursor glow
+  var gl=document.getElementById('glow');
+  addEventListener('pointermove',function(e){gl.style.transform='translate('+e.clientX+'px,'+e.clientY+'px)'});
+  // scroll progress + hero parallax
+  var bar=document.getElementById('bar'),st=document.querySelector('.stage');
+  function sc(){var m=document.documentElement.scrollHeight-innerHeight;bar.style.transform='scaleX('+(m>0?scrollY/m:0)+')';
+    if(!rm)st.style.transform='translateY('+Math.min(scrollY*.12,60)+'px)'}
+  addEventListener('scroll',sc,{passive:true});sc();
+  // game pages (hash routes: #irefelx, #megagrid)
+  var G={
+    irefelx:{n:'iReflex',c:'var(--pink)',
+      tag:'Dodge the gaze. Beat the sequence.',
+      desc:'A wall of hidden, illuminated buttons watched over by a single glowing eye. Players must press the buttons in the correct sequence before time runs out, while staying alert, since the eye is always ready to catch a wrong move. Fast reflexes, sharp memory, and steady nerves decide the winner.',
+      specs:[['Players','Up to 6'],['Area','200 sq ft min'],['Game modes','3 modes'],['Age group','All ages. No age limit on fun!']],
+      modes:['Solo Challenge','Co-op','Competitive'],
+      feat:[['Press in sequence','Right buttons. Right order.'],['Stay alert','Eye opens, stay uncaught from it.'],['Beat the clock','Time runs out. Don\'t.']],
+      imgs:['img/ireflex-1.jpg','img/ireflex-2.jpg','img/ireflex-3.jpg']},
+    megagrid:{n:'MegaGrid',c:'var(--cyan)',
+      tag:'Step smart. Score fast.',
+      desc:'A floor of LED-lit, touch-sensitive tiles that light up in changing patterns. Players react on their feet, stepping on target tiles and avoiding trap tiles, racing the clock and each other across more than 30 levels of rising difficulty.',
+      specs:[['Players','1–6'],['Area','200 sq ft min'],['Levels','30+'],['Age group','All ages. No age limit on fun!']],
+      modes:['Solo Challenge','Co-op','Competitive'],
+      feat:[['Hit the targets','Step on the lit target tiles.'],['Dodge the traps','Avoid the trap tiles.'],['Beat the clock','Race the timer and each other.']],
+      imgs:['img/megagrid-1.jpg','img/megagrid-2.jpg','img/megagrid-3.jpg']}
+  };
+  Object.keys(G).forEach(function(k){var d=G[k],n=d.n,m=document.getElementById('g-'+k);m.style.setProperty('--c',d.c);
+    var specs=d.specs||[['Players'],['Area','Minimum 200 sq ft arena'],['Age group','All ages. No age limit on fun!'],['Power'],['Installation']];
+    var feat=d.feat||[1,2,3].map(function(i){return ['[Feature '+i+']','[One short line]',1]});
+    var gal=d.imgs?d.imgs.map(function(u){return '<div class="pic"><img src="'+u+'" alt="'+n+' gameplay" loading="lazy"></div>'}).join(''):'<div class="ph">[Photo or video]</div><div class="ph">[Photo]</div><div class="ph">[Photo]</div>';
+    m.innerHTML='<section class="gh"><div class="wrap"><a class="back" href="#products">‹ All games</a><h1 class="rv">'+n+'</h1>'+
+    '<p class="'+(d.tag?'':'ph ')+'rv" style="--d:.1s">'+(d.tag||'[One-line tagline for '+n+']')+'</p>'+
+    (d.desc?'<p class="rv" style="--d:.15s;color:var(--mute);font-size:17px;max-width:60ch">'+d.desc+'</p>':'')+
+    '<div class="cta rv" style="--d:.2s"><a class="btn" href="#contact">Request a demo</a></div></div></section>'+
+    '<section><div class="wrap"><h2 class="rv">Key details</h2><div class="specs">'+
+    specs.map(function(s,i){return '<div class="rv" style="--d:'+(i*.08)+'s"><b>'+s[0]+'</b><small'+(s[1]?'':' class="ph"')+'>'+(s[1]||'[Add detail]')+'</small></div>'}).join('')+'</div></div></section>'+
+    (d.modes?'<section><div class="wrap"><h2 class="rv">Game modes</h2><div class="chips rv">'+d.modes.map(function(x){return '<span>'+x+'</span>'}).join('')+'</div></div></section>':'')+
+    '<section><div class="wrap"><h2 class="rv">'+(d.feat?'How it plays':'Why '+n)+'</h2><div class="specs">'+
+    feat.map(function(f,i){return '<div class="rv" style="--d:'+((i+1)*.1)+'s"><b'+(f[2]?' class="ph"':'')+'>'+f[0]+'</b><small'+(f[2]?' class="ph"':'')+'>'+f[1]+'</small></div>'}).join('')+'</div></div></section>'+
+    '<section><div class="wrap"><h2 class="rv">Gallery</h2><div class="gal rv">'+gal+'</div></div></section>'+
+    '<section class="band"><div class="wrap"><h2 class="rv">Want '+n+' at your location?</h2><p class="lead rv" style="--d:.1s">Tell us about your space. We reply within 24 hours.</p><a class="btn rv" style="--d:.2s" href="#contact">Get in touch</a></div></section>';});
+  document.querySelectorAll('.card').forEach(function(c){c.style.cursor='pointer';
+    c.addEventListener('click',function(e){if(!e.target.closest('a'))location.hash=c.querySelector('.more').hash.slice(1)})});
+  function route(){var h=location.hash.slice(1),gm=G[h];
+    document.getElementById('top').hidden=!!gm;
+    Object.keys(G).forEach(function(k){document.getElementById('g-'+k).hidden=(k!==h)});
+    document.title=gm?gm.n+' – MakerGames':'MakerGames – Next-Gen Attraction Games';
+    if(gm)scrollTo({top:0,behavior:'instant'});
+    else if(h&&document.getElementById(h))setTimeout(function(){document.getElementById(h).scrollIntoView()},0);}
+  addEventListener('hashchange',route);route();
+  // story tabs
+  (function(){var tabs=[].slice.call(document.querySelectorAll('#chap button')),panes=[].slice.call(document.querySelectorAll('.pane')),chap=document.getElementById('chap'),cur=0,tm;
+    function go(i,user){cur=i;tabs.forEach(function(t,k){t.setAttribute('aria-selected',k===i)});panes.forEach(function(p,k){p.classList.toggle('on',k===i)});
+      if(user){chap.classList.remove('auto');clearTimeout(tm)}else{chap.classList.remove('auto');void chap.offsetWidth;chap.classList.add('auto');sched()}}
+    function sched(){clearTimeout(tm);if(rm)return;tm=setTimeout(function(){go((cur+1)%tabs.length,false)},6000)}
+    tabs.forEach(function(t,i){t.addEventListener('click',function(){go(i,true)})});
+    if(rm)chap.classList.remove('auto');else sched();
+  })();
+  document.querySelectorAll('a[data-ph]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault()})});
+  // reveal + count up
+  function count(el){var to=+el.dataset.to,s=performance.now();
+    (function f(n){var p=Math.min((n-s)/1600,1);el.textContent=Math.round(to*(1-Math.pow(1-p,3))).toLocaleString('en-IN');if(p<1)requestAnimationFrame(f)})(s)}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');
+    e.target.querySelectorAll('.cnt').forEach(function(c){if(!rm)count(c)});io.unobserve(e.target)}})},{threshold:.15});
+  document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+  // card tilt + spotlight
+  document.querySelectorAll('.card').forEach(function(c){
+    c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+      c.style.setProperty('--mx',x+'px');c.style.setProperty('--my',y+'px');
+      if(!rm){c.style.setProperty('--ry',((x/r.width-.5)*12)+'deg');c.style.setProperty('--rx',((.5-y/r.height)*12)+'deg')}});
+    c.addEventListener('pointerleave',function(){c.style.setProperty('--rx','0deg');c.style.setProperty('--ry','0deg')});
+  });
+  var form=document.getElementById('f'),note=document.getElementById('note'),TO='info@makergames.tech';
+  form.addEventListener('submit',function(e){e.preventDefault();
+    var btn=form.querySelector('button'),fd=new FormData(form);
+    fd.append('_subject','New enquiry from MakerGames website');fd.append('_template','table');fd.append('_captcha','false');
+    btn.disabled=true;note.textContent='Sending...';
+    fetch('https://formsubmit.co/ajax/'+TO,{method:'POST',headers:{'Accept':'application/json'},body:fd})
+      .then(function(r){if(!r.ok)throw 0;return r.json()})
+      .then(function(){note.textContent='Thanks. We will reply within 24 hours.';form.reset()})
+      .catch(function(){
+        var b='';fd.forEach(function(v,k){if(k.charAt(0)!=='_'&&v)b+=k+': '+v+'\n'});
+        note.innerHTML='Could not send. <a href="mailto:'+TO+'?subject='+encodeURIComponent('Enquiry from MakerGames website')+'&body='+encodeURIComponent(b)+'">Send by email instead</a>';
+      })
+      .finally(function(){btn.disabled=false});
+  });
+})();
+</script>
+</body>
+</html>
