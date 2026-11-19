@@ -135,7 +135,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .gal .pic:hover img{transform:scale(1.06)}
 .chips{display:flex;gap:12px;flex-wrap:wrap}
 .chips span{padding:10px 22px;border:1px solid var(--c);border-radius:999px;color:var(--c);font-weight:700}
-.about-intro{max-width:60ch}
+.about-intro{max-width:none;color:var(--ink);font-size:19px;line-height:1.7}
 .story{display:grid;grid-template-columns:minmax(220px,1fr) 1.7fr;gap:28px;margin-top:8px}
 .chap{display:grid;gap:10px;align-content:start}
 .chap button{position:relative;overflow:hidden;text-align:left;padding:16px 20px;border:1px solid var(--line);border-radius:14px;background:rgba(20,22,26,.7);color:var(--mute);font:700 16px var(--body);cursor:pointer;transition:color .3s,border-color .3s,transform .3s}
@@ -166,6 +166,24 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 
 .foot-l a{color:var(--mute)}.foot-l a:hover{color:var(--ink)}
 @media(max-width:760px){.story{grid-template-columns:1fr}.panel{padding:26px}.facts{gap:36px}}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.wcard{padding:28px;border:1px solid var(--line);border-radius:18px;background:#111317;transition:transform .3s,border-color .3s,box-shadow .3s}
+.wcard:hover{transform:translateY(-8px);border-color:var(--violet);box-shadow:0 22px 50px -26px var(--violet)}
+.wcard svg{width:34px;height:34px;fill:none;stroke:var(--violet);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;margin-bottom:18px;transition:transform .4s}
+.wcard:hover svg{transform:rotate(-8deg) scale(1.12)}
+.wcard .num{font:700 38px/1 var(--display);color:var(--violet);margin-bottom:18px}
+.wcard .num small{font:500 15px var(--body);color:var(--mute);margin-left:6px}
+.wcard h3{font:700 20px/1.25 var(--body);margin:0 0 8px}
+.wcard p{margin:0;color:var(--mute);font-size:16px}
+.roi{margin-top:24px;padding:36px;border:2px solid var(--violet);border-radius:22px;background:rgba(212,255,58,.06);box-shadow:0 0 70px -24px rgba(212,255,58,.45);display:flex;gap:36px;align-items:center;flex-wrap:wrap}
+.roi-n{font:700 clamp(46px,7vw,84px)/1 var(--display);color:var(--violet);text-shadow:0 0 40px rgba(212,255,58,.35)}
+.roi-n small{display:block;font:500 16px var(--body);color:var(--ink);margin-top:8px;text-shadow:none}
+.roi-t{flex:1 1 320px}
+.roi h3{font:700 clamp(20px,2.4vw,26px)/1.25 var(--display);letter-spacing:.02em;margin:0 0 10px}
+.roi p{margin:0 0 8px;color:var(--mute);max-width:56ch}
+.roi .fine{color:var(--mute);font-size:13px}
+@media(max-width:900px){.why{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.why{grid-template-columns:1fr}}
 @media(max-width:760px){.gal{grid-template-columns:1fr;grid-template-rows:none;grid-auto-rows:170px}.gal div:first-child{grid-row:auto}}
 @media(max-width:760px){
   nav a:not(.btn){display:none}
@@ -186,7 +204,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 <div id="bar"></div><div id="glow"></div>
 <header><div class="wrap">
   <a class="logo" href="#top">Maker<span>Games</span></a>
-  <nav><a href="#products">Products</a><a href="#about">About</a><a class="btn" href="#contact">Get in touch</a></nav>
+  <nav><a href="#products">Products</a><a href="#why">Why us</a><a href="#about">About</a><a class="btn" href="#contact">Get in touch</a></nav>
 </div></header>
 
 <main id="top">
@@ -228,9 +246,31 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
   </div>
 </div></section>
 
+<section id="why"><div class="wrap">
+  <h2 class="rv">Why venues choose us</h2>
+  <p class="lead rv" style="--d:.1s">Big play, small footprint. Our games bring the crowd in and keep players coming back, without needing a huge space.</p>
+  <div class="why">
+    <div class="wcard rv"><div class="num">200<small>sq ft</small></div><h3>Compact footprint</h3><p>Both games start at a 200 sq ft arena, so big and small venues can fit them in.</p></div>
+    <div class="wcard rv" style="--d:0.08s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><h3>Crowd pulling</h3><p>Glowing floors and watchful eyes make people stop, stare and join in.</p></div>
+    <div class="wcard rv" style="--d:0.16s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg><h3>Keeps youth moving</h3><p>Stepping, pressing and dodging get players active without feeling like exercise.</p></div>
+    <div class="wcard rv" style="--d:0.24s"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><h3>In-house technology</h3><p>Our technology is designed and built in-house. Proudly Make in India.</p></div>
+    <div class="wcard rv" style="--d:0.32s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/><path d="M19 20a3 3 0 0 1-3 2h-3"/></svg><h3>Excellent after-sales support</h3><p>Our team stays with you after installation to keep your games running.</p></div>
+    <div class="wcard rv" style="--d:0.40s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></svg><h3>Made to replay</h3><p>Levels and modes give players a reason to come back.</p></div>
+  </div>
+  <div class="roi rv">
+    <div class="roi-n">3–6<small>months to ROI</small></div>
+    <div class="roi-t">
+      <h3>Get your investment back in 3 to 6 months</h3>
+      <p>Both games fit in 200 sq ft, welcome every age and bring players back. Share your floor plan and budget, and we will suggest the right fit.</p>
+      <small class="fine">Results vary by venue.</small>
+    </div>
+    <a class="btn" href="#contact">Get a quote</a>
+  </div>
+</div></section>
+
 <section id="about"><div class="wrap">
   <h2 class="rv">About us</h2>
-  <p class="lead about-intro rv" style="--d:.1s">MakerGames is built by founders with 4+ years in the amusement gaming industry. We make crowd-pulling games, and we believe youth deserve a better game to play on.</p>
+  <p class="lead about-intro rv" style="--d:.1s">MakerGames builds crowd-pulling attraction games for entertainment venues. Our founders bring 4+ years of experience in the amusement gaming industry, with a focus on gaming technology and next-gen, real-world games for every age group. As our name says, we are makers at heart, on a mission to change the world through play.</p>
   <div class="story rv" style="--d:.15s">
     <div class="chap auto" id="chap" role="tablist" aria-label="Our story">
       <button role="tab" aria-selected="true" aria-controls="p0" id="t0">Where we come from</button>
@@ -239,17 +279,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
       <button role="tab" aria-selected="false" aria-controls="p3" id="t3">Where we are heading</button>
     </div>
     <div class="panel">
-      <div class="pane on" role="tabpanel" id="p0" aria-labelledby="t0"><h3>Where we come from</h3><p>We are the founders of MakerGames. We have spent 4+ years in the amusement gaming industry, learning what makes a crowd stop, watch and play.</p><p class="ph">[Add where MakerGames is based]</p></div>
+      <div class="pane on" role="tabpanel" id="p0" aria-labelledby="t0"><h3>Where we come from</h3><p>We are the founders of MakerGames. We have spent 4+ years in the amusement gaming industry, learning what makes a crowd stop, watch and play.</p></div>
       <div class="pane" role="tabpanel" id="p1" aria-labelledby="t1"><h3>What we know</h3><p>Gaming technology is our craft. We build real-world games that pull crowds, from LED floors to reflex rooms.</p></div>
       <div class="pane" role="tabpanel" id="p2" aria-labelledby="t2"><h3>Why we build</h3><p>Youth deserve a better game to play on. We build attractions that keep them active, healthy and having fun.</p></div>
       <div class="pane" role="tabpanel" id="p3" aria-labelledby="t3"><h3>Where we are heading</h3><p>We want to change the world through play, one game at a time. iReflex and MegaGrid are where it starts.</p></div>
     </div>
   </div>
-  <div class="facts rv" style="--d:.2s">
-    <div><b><span class="cnt" data-to="4">4</span>+</b><small>Years in amusement gaming</small></div>
-    <div><b><span class="cnt" data-to="2">2</span></b><small>Games, with more coming</small></div>
-  </div>
-  <p class="ph rv" style="--d:.25s;margin-top:32px">[Add founder names and photos]</p>
 </div></section>
 
 <section id="contact"><div class="wrap">
