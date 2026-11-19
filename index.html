@@ -290,7 +290,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 <section id="contact"><div class="wrap">
   <h2 class="rv">Let’s talk</h2>
   <p class="lead rv" style="--d:.1s">Tell us about your location. We’ll reply within 24 hours.</p>
-  <form id="f" class="rv" style="--d:.15s">
+  <form id="f" class="rv" style="--d:.15s" action="https://formsubmit.co/info@makergames.tech" method="POST">
+    <input type="hidden" name="_subject" value="New enquiry from MakerGames website">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="https://makergames.tech/?sent=1#contact">
     <label>First name<input name="First name" required autocomplete="given-name"></label>
     <label>Last name<input name="Last name" autocomplete="family-name"></label>
     <label>Phone<input name="Phone" type="tel" autocomplete="tel"></label>
@@ -402,18 +406,20 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
     c.addEventListener('pointerleave',function(){c.style.setProperty('--rx','0deg');c.style.setProperty('--ry','0deg')});
   });
   var form=document.getElementById('f'),note=document.getElementById('note'),TO='info@makergames.tech';
+  if(/[?&]sent=1/.test(location.search)){note.textContent='Thanks. Your enquiry was sent. We will reply within 24 hours.';
+    try{history.replaceState(null,'',location.pathname+location.hash)}catch(_){}}
   form.addEventListener('submit',function(e){e.preventDefault();
     var btn=form.querySelector('button'),fd=new FormData(form);
-    fd.append('_subject','New enquiry from MakerGames website');fd.append('_template','table');fd.append('_captcha','false');
     btn.disabled=true;note.textContent='Sending...';
+    function fallback(){HTMLFormElement.prototype.submit.call(form)}
     fetch('https://formsubmit.co/ajax/'+TO,{method:'POST',headers:{'Accept':'application/json'},body:fd})
-      .then(function(r){if(!r.ok)throw 0;return r.json()})
-      .then(function(){note.textContent='Thanks. We will reply within 24 hours.';form.reset()})
-      .catch(function(){
-        var b='';fd.forEach(function(v,k){if(k.charAt(0)!=='_'&&v)b+=k+': '+v+'\n'});
-        note.innerHTML='Could not send. <a href="mailto:'+TO+'?subject='+encodeURIComponent('Enquiry from MakerGames website')+'&body='+encodeURIComponent(b)+'">Send by email instead</a>';
+      .then(function(r){return r.json()})
+      .then(function(j){
+        if(String(j.success)==='true'){note.textContent='Thanks. Your enquiry was sent. We will reply within 24 hours.';form.reset();btn.disabled=false}
+        else if(j&&j.message){note.textContent=j.message;btn.disabled=false}
+        else fallback();
       })
-      .finally(function(){btn.disabled=false});
+      .catch(fallback);
   });
 })();
 </script>
